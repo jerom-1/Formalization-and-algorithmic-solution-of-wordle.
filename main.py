@@ -1,6 +1,6 @@
 #importando los archivos
 
-
+from matplotlib import pyplot as plt
 import numpy as np
 from numpy import loadtxt
 import os
@@ -20,6 +20,8 @@ import math
 RUTA_ABSOLUTA=os.getcwd()
 
 provLISTA_DE_PALABRAS = os.path.join(RUTA_ABSOLUTA, "provisionales.txt")
+imagenes=os.path.join(RUTA_ABSOLUTA,"imagenes")
+
 
 #hace un rastreo del archivo y lo convierte en una lista
 def aLista(path):
@@ -32,7 +34,7 @@ def aLista(path):
 LiSTA_TRABAJABLE=aLista(provLISTA_DE_PALABRAS)
 
 palabra_del_dia=random.choice(LiSTA_TRABAJABLE)
-
+#palabra_del_dia="lumpy"
 #############################################################################################################
 
 
@@ -298,7 +300,7 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
 
     if len(prelista_final)>=1:    
         bits=-(math.log2(probabilidad)) 
-        print("Hay ",len(prelista_final), " palabras posibles, dando una probabilidad de: " ,probabilidad*100," % para este patron de colores dada la palabra original")
+        print("Hay ",len(prelista_final), " palabras posibles, dando una probabilidad de: " ,probabilidad,"para este patron de colores dada la palabra original")
         print("Ademas nos da",bits, "bits de informacion")
     else:
         print("La probabilidad de tu palabra es: 1/", str(len(LiSTA_TRABAJABLE)))
@@ -333,17 +335,48 @@ def JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE):
 #############################################################################################################
 
 
-def frecuencias(COMPENDIO_COLORES):
+def frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
     NUEVO_COMPENDIO=[]
     for element in COMPENDIO_COLORES:
         nuevo_string=str(element).replace('"','')
         NUEVO_COMPENDIO.append(nuevo_string)
 
     counter=collections.Counter(NUEVO_COMPENDIO)
-    diccionario=dict(counter)
+    diccionario2=dict(counter)
+    diccionario=dict(sorted(diccionario2.items(), key=lambda item: item[1]))
+    nueva_lista=[]
     for x in diccionario.keys():
-        print(x , " => " , diccionario[x])
+        nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
+        #print(x , " => " , diccionario[x])
+    
+   # print(nueva_lista)
+    return nueva_lista
 
+
+
+#############################################################################################################
+
+
+def histograma(mydict,palabra_del_dia):
+    numeros=[]
+    for x in range(len(mydict)):
+        numeros.append(x)
+    fig, ax = plt.subplots()
+    ax.bar(numeros,mydict)
+    plt.title(palabra_del_dia)
+    imagenes='/home/jerom/Desktop/jerom/proyecto-probabilidad/imagenes'
+    plt.savefig(imagenes)
+#   plt.xlabel('Patron')
+#   plt.ylabel('frecuencias')
+ #   plt.show()
+
+
+
+def entriopia(LiSTA_TRABAJABLE):
+    for palabra in LiSTA_TRABAJABLE:
+        COMPENDIO_COLORES=OBTENER_COLORES(palabra,LiSTA_TRABAJABLE)
+        lista=frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
+        histograma(lista,palabra)
 
 
 #############################################################################################################
@@ -352,18 +385,29 @@ def frecuencias(COMPENDIO_COLORES):
 #MAIN POR DECIRLO ASI
 
 
-print(palabra_del_dia)
+#############################################################################################################
+#############################################################################################################
+
+entriopia(LiSTA_TRABAJABLE)
+#print(palabra_del_dia)
 
 
-COMPENDIO_COLORES=OBTENER_COLORES(palabra_del_dia,LiSTA_TRABAJABLE)
+#JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE)
 
-frecuencias(COMPENDIO_COLORES)
+#COMPENDIO_COLORES=OBTENER_COLORES(palabra_del_dia,LiSTA_TRABAJABLE)
+
+#frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
+
+#lista=frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
+#diccionario = {1: 27, 34: 1, 3: 72, 4: 62, 5: 33, 6: 36, 7: 20, 8: 12, 9: 9, 10: 6, 11: 5, 
+    #          12: 8, 2: 74, 14: 4, 15: 3, 16: 1, 17: 1, 18: 1, 19: 1, 21: 1, 27: 2}
+
+#histograma(lista,palabra_del_dia)
 
 
 
 
 #VER_COMPENDIO(COMPENDIO_COLORES)
-#JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE)
 #VER_PALABRAS(LiSTA_TRABAJABLE)
 
 
