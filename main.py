@@ -356,6 +356,28 @@ def frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
 
 #############################################################################################################
 
+def mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
+    NUEVO_COMPENDIO=[]
+    for element in COMPENDIO_COLORES:
+        nuevo_string=str(element).replace('"','')
+        NUEVO_COMPENDIO.append(nuevo_string)
+
+    counter=collections.Counter(NUEVO_COMPENDIO)
+    diccionario2=dict(counter)
+    diccionario=dict(sorted(diccionario2.items(), key=lambda item: item[1]))
+    nueva_lista=[]
+    for x in diccionario.keys():
+        if ((int(list(diccionario.values())[-1]))-(int((list(diccionario.values())[-2]))))<10:
+            #print(x , " => " , diccionario[x])
+            nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
+        else:
+            #print("Muy poca entriopia")
+            exit 
+   # print(nueva_lista)
+    return nueva_lista
+
+
+#############################################################################################################
 
 def histograma(mydict,palabra_del_dia):
     numeros=[]
@@ -364,8 +386,9 @@ def histograma(mydict,palabra_del_dia):
     fig, ax = plt.subplots()
     ax.bar(numeros,mydict)
     plt.title(palabra_del_dia)
-    imagenes='/home/jerom/Desktop/jerom/proyecto-probabilidad/imagenes'
-    plt.savefig(imagenes)
+    
+    imagenes=str(palabra_del_dia)
+    plt.savefig('imagenes/'+palabra_del_dia)
 #   plt.xlabel('Patron')
 #   plt.ylabel('frecuencias')
  #   plt.show()
@@ -375,8 +398,10 @@ def histograma(mydict,palabra_del_dia):
 def entriopia(LiSTA_TRABAJABLE):
     for palabra in LiSTA_TRABAJABLE:
         COMPENDIO_COLORES=OBTENER_COLORES(palabra,LiSTA_TRABAJABLE)
-        lista=frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
-        histograma(lista,palabra)
+        lista=mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
+        if len(lista)>1:
+            print(lista)
+            histograma(lista,palabra)
 
 
 #############################################################################################################
