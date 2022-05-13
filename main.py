@@ -1,5 +1,4 @@
 #importando los archivos
-
 from matplotlib import pyplot as plt
 import numpy as np
 from numpy import loadtxt
@@ -8,7 +7,8 @@ import random
 import collections
 import itertools 
 import math
-
+#import pygame 
+#from pygame.locals import *
 
 #############################################################################################################
 #############################################################################################################
@@ -294,8 +294,9 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
 #############################################################################################################
 
 #EJECUTABLE
-
-    print(prelista_final)
+    
+    #print ("\n".join([" ".join(prelista_final[i:i+15]) for i in range(0,len(prelista_final),15)]))
+    #print(prelista_final)
     
 
     if len(prelista_final)>=1:    
@@ -367,7 +368,7 @@ def mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
     diccionario=dict(sorted(diccionario2.items(), key=lambda item: item[1]))
     nueva_lista=[]
     for x in diccionario.keys():
-        if ((int(list(diccionario.values())[-1]))-(int((list(diccionario.values())[-2]))))<10:
+        if ((int(list(diccionario.values())[-1]))-(int((list(diccionario.values())[-2]))))<3:
             #print(x , " => " , diccionario[x])
             nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
         else:
@@ -388,7 +389,7 @@ def histograma(mydict,palabra_del_dia):
     plt.title(palabra_del_dia)
     
     imagenes=str(palabra_del_dia)
-    plt.savefig('imagenes/'+palabra_del_dia)
+    plt.savefig('imagenes2/'+palabra_del_dia)
 #   plt.xlabel('Patron')
 #   plt.ylabel('frecuencias')
  #   plt.show()
@@ -462,7 +463,6 @@ def enumerar_colores():
 
 
     return PATRONES
-
 
 
 
