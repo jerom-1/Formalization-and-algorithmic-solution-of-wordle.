@@ -295,8 +295,8 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
 
 #EJECUTABLE
     
-    #print ("\n".join([" ".join(prelista_final[i:i+15]) for i in range(0,len(prelista_final),15)]))
-    #print(prelista_final)
+    print ("\n".join([" ".join(prelista_final[i:i+15]) for i in range(0,len(prelista_final),15)]))
+   # print(prelista_final)
     
 
     if len(prelista_final)>=1:    
@@ -412,8 +412,9 @@ def auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
     for x in diccionario2.keys():
         nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
 
+
     
-    return nueva_lista
+    return nueva_lista,diccionario2
 
 def guardarimagenes(LiSTA_TRABAJABLE):
     for palabra in LiSTA_TRABAJABLE:
@@ -434,25 +435,23 @@ def entriopia(LiSTA_TRABAJABLE):
         promedio=[]
         diccionariopromedios=dict()
         COMPENDIO_COLORES=OBTENER_COLORES(palabra,LiSTA_TRABAJABLE)
-        lista=auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
+        lista,dicti=auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
         if len(lista)>1:
             for element in lista:
+
                 bits=-(math.log2(element))
                 suma=len(lista)/243
                 entriopia=bits*suma
                 promedio.append(entriopia)
-                #print(element)
-                #print(len(lista))
                 
 
-                #print((-(math.log2(int(element))))*((lista)/243))
         else:
             print("Existo :)")
+        
         palabraentriopia=sum(promedio)/len(lista)
 
+        
         diccionariopromedios={ palabra  : [palabraentriopia] }
-
-        print(diccionariopromedios)
 #############################################################################################################
 #############################################################################################################
 
@@ -462,11 +461,11 @@ def entriopia(LiSTA_TRABAJABLE):
 #############################################################################################################
 #############################################################################################################
 #guardarimagenes(LiSTA_TRABAJABLE)
-entriopia(LiSTA_TRABAJABLE)
+#entriopia(LiSTA_TRABAJABLE)
 #print(palabra_del_dia)
 
 
-#JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE)
+JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE)
 
 #COMPENDIO_COLORES=OBTENER_COLORES(palabra_del_dia,LiSTA_TRABAJABLE)
 
