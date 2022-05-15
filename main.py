@@ -368,7 +368,7 @@ def mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
     diccionario=dict(sorted(diccionario2.items(), key=lambda item: item[1]))
     nueva_lista=[]
     for x in diccionario.keys():
-        if ((int(list(diccionario.values())[-1]))-(int((list(diccionario.values())[-2]))))<3:
+        if ((int(list(diccionario.values())[-1]))-(int((list(diccionario.values())[-2]))))<100000:
             #print(x , " => " , diccionario[x])
             nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
         else:
@@ -387,24 +387,72 @@ def histograma(mydict,palabra_del_dia):
     fig, ax = plt.subplots()
     ax.bar(numeros,mydict)
     plt.title(palabra_del_dia)
-    
+
     imagenes=str(palabra_del_dia)
     plt.savefig('imagenes2/'+palabra_del_dia)
+
 #   plt.xlabel('Patron')
 #   plt.ylabel('frecuencias')
  #   plt.show()
 
 
+def auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
+    NUEVO_COMPENDIO=[]
+    for element in COMPENDIO_COLORES:
+        nuevo_string=str(element).replace('"','')
+        NUEVO_COMPENDIO.append(nuevo_string)
 
-def entriopia(LiSTA_TRABAJABLE):
+    counter=collections.Counter(NUEVO_COMPENDIO)
+    
+    diccionario2=dict(counter)
+    
+    diccionario=dict(sorted(diccionario2.items(), key=lambda item: item[1]))
+    
+    nueva_lista=[]
+    for x in diccionario2.keys():
+        nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
+
+    
+    return nueva_lista
+
+def guardarimagenes(LiSTA_TRABAJABLE):
     for palabra in LiSTA_TRABAJABLE:
         COMPENDIO_COLORES=OBTENER_COLORES(palabra,LiSTA_TRABAJABLE)
         lista=mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
         if len(lista)>1:
-            print(lista)
+            #print(lista)
             histograma(lista,palabra)
 
+#dado una palabra, que recopile la probababilidad de los colores, y sume las probababilidades:
+#mas plano mas entriopia
 
+def entriopia(LiSTA_TRABAJABLE):
+    promedios=[]
+    mayor=0
+    palabrafinal=''
+    for palabra in LiSTA_TRABAJABLE:
+        promedio=[]
+        diccionariopromedios=dict()
+        COMPENDIO_COLORES=OBTENER_COLORES(palabra,LiSTA_TRABAJABLE)
+        lista=auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
+        if len(lista)>1:
+            for element in lista:
+                bits=-(math.log2(element))
+                suma=len(lista)/243
+                entriopia=bits*suma
+                promedio.append(entriopia)
+                #print(element)
+                #print(len(lista))
+                
+
+                #print((-(math.log2(int(element))))*((lista)/243))
+        else:
+            print("Existo :)")
+        palabraentriopia=sum(promedio)/len(lista)
+
+        diccionariopromedios={ palabra  : [palabraentriopia] }
+
+        print(diccionariopromedios)
 #############################################################################################################
 #############################################################################################################
 
@@ -413,7 +461,7 @@ def entriopia(LiSTA_TRABAJABLE):
 
 #############################################################################################################
 #############################################################################################################
-
+#guardarimagenes(LiSTA_TRABAJABLE)
 entriopia(LiSTA_TRABAJABLE)
 #print(palabra_del_dia)
 
