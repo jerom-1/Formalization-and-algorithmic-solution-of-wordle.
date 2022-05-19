@@ -1,5 +1,5 @@
 #importando los archivos
-from matplotlib import pyplot as plt
+import matplotlib as plt 
 import numpy as np
 from numpy import loadtxt
 import os
@@ -7,9 +7,9 @@ import random
 import collections
 import itertools 
 import math
-#import pygame 
-#from pygame.locals import *
-
+import pandas as pd
+import statistics as st
+from collections import OrderedDict
 #############################################################################################################
 #############################################################################################################
 #############################################################################################################
@@ -24,6 +24,19 @@ imagenes=os.path.join(RUTA_ABSOLUTA,"imagenes")
 
 
 #hace un rastreo del archivo y lo convierte en una lista
+
+def aLista(path):
+    image = loadtxt(str(path),dtype=str, delimiter='","')
+    provLISTA_VERTICAL=[]
+    for element in image:
+        provLISTA_VERTICAL.append(element)
+
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+
+#hace un rastreo del archivo y lo convierte en una lista
+
 def aLista(path):
     image = loadtxt(str(path),dtype=str, delimiter='","')
     provLISTA_VERTICAL=[]
@@ -31,10 +44,17 @@ def aLista(path):
         provLISTA_VERTICAL.append(element)
     return provLISTA_VERTICAL
 
+
+
+
+
+
+#############################################################################################################
+
 LiSTA_TRABAJABLE=aLista(provLISTA_DE_PALABRAS)
 
 palabra_del_dia=random.choice(LiSTA_TRABAJABLE)
-#palabra_del_dia="lumpy"
+
 #############################################################################################################
 
 
@@ -47,6 +67,10 @@ palabra_del_dia=random.choice(LiSTA_TRABAJABLE)
 #METODOS UTILES
 
 
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
 def VER_PALABRAS(LiSTA_TRABAJABLE):
     for palabra in LiSTA_TRABAJABLE:
@@ -54,7 +78,9 @@ def VER_PALABRAS(LiSTA_TRABAJABLE):
 
 
 #############################################################################################################
-
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
 def OBTENER_COLORES(palabra_del_dia,LiSTA_TRABAJABLE):
     COMPENDIO_COLORES=[]
@@ -71,10 +97,15 @@ def OBTENER_COLORES(palabra_del_dia,LiSTA_TRABAJABLE):
 
         COMPENDIO_COLORES.append(COLORES)
 
+
+
     return COMPENDIO_COLORES
 
 
 
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 #############################################################################################################
 
 
@@ -104,7 +135,9 @@ def COLOR_SINGULAR(palabra_del_dia):
 
 
 #############################################################################################################
-
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
 def VER_COMPENDIO(COMPENDIO_COLORES):
     for color in COMPENDIO_COLORES:
@@ -115,10 +148,11 @@ def VER_COMPENDIO(COMPENDIO_COLORES):
 
 
 #############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
 
-       
-#que me muestre la probabilidad
 def _INDICE(tablero):
     INDICES=[]
     for i in range(len(tablero)):
@@ -129,19 +163,16 @@ def _INDICE(tablero):
 
 
 #############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
 #METODO PRINCIPAL PRACTICAMENTE
 
 
 def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRISES):
     NUEVAS_PALABRAS=[]
-    #print(INDICES)#[3,1,4]
-    #print(LETRASVERDES,'VERDES')
-    #print(NARANJAS,'NARANJAS')
-    #print(GRISES,'GRISES')
     LiSTA_TRABAJABLE.pop()
-
-
     preNUEVAS_PALABRAS=[]
 
 
@@ -183,24 +214,25 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
 
     if len(INDICES)>=1:
         for palabra in LiSTA_TRABAJABLE:
-            if palabra[INDICES[0]]==LETRASVERDES[0]:
-                if len(INDICES) >= 2:
-                    if palabra[INDICES[1]]==LETRASVERDES[1]:
-                        if len(INDICES) >= 3:
-                            if palabra[INDICES[2]]==LETRASVERDES[2]:
-                                if len(INDICES) >= 4:
-                                    if palabra[INDICES[3]]==LETRASVERDES[3]:
-                                        if len(INDICES) == 5:
-                                            if palabra[INDICES[4]]==LETRASVERDES[4]:
+            if len(palabra)>=1:
+                if palabra[INDICES[0]]==LETRASVERDES[0]:
+                    if len(INDICES) >= 2:
+                        if palabra[INDICES[1]]==LETRASVERDES[1]:
+                            if len(INDICES) >= 3:
+                                if palabra[INDICES[2]]==LETRASVERDES[2]:
+                                    if len(INDICES) >= 4:
+                                        if palabra[INDICES[3]]==LETRASVERDES[3]:
+                                            if len(INDICES) == 5:
+                                                if palabra[INDICES[4]]==LETRASVERDES[4]:
+                                                    NUEVAS_PALABRAS.append(palabra)
+                                            else:
                                                 NUEVAS_PALABRAS.append(palabra)
-                                        else:
-                                            NUEVAS_PALABRAS.append(palabra)
-                                else:
-                                    NUEVAS_PALABRAS.append(palabra)                                                     
-                        else:
-                            NUEVAS_PALABRAS.append(palabra)
-                else:
-                    NUEVAS_PALABRAS.append(palabra)
+                                    else:
+                                        NUEVAS_PALABRAS.append(palabra)                                                     
+                            else:
+                                NUEVAS_PALABRAS.append(palabra)
+                    else:
+                        NUEVAS_PALABRAS.append(palabra)
     else:
         print("Todas las palabras")
     
@@ -240,11 +272,12 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
 
 #############################################################################################################
 
+#CUALES SON CUALES
 #lista_final(grises)
 #preNUEVAS_PALABRAS(naranjas)
 #NUEVAS_PALABRAS(verdes)
 
-#CUALES SON CUALES (arriba)
+#CUALES SON CUALES
 #############################################################################################################
 
 #TODOS LOS POSIBLES CASOS DONDE NO EXISTEN ALGUNOS 
@@ -271,7 +304,7 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
                     if w1==w2:
                         prelista_final.append(w1) #VG
         else:
-            print("GANASTEEE") #V
+            print(" ") #V
     
     elif(len(preNUEVAS_PALABRAS)>=1):
         if(len(lista_final)>=1):
@@ -288,51 +321,73 @@ def REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE, INDICES, LETRASVERDES,NARANJAS,GRIS
 
 
 #############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
-    probabilidad=len(prelista_final)/len(LiSTA_TRABAJABLE)
+    if len(LiSTA_TRABAJABLE)>0:
+        probabilidad=len(prelista_final)/len(LiSTA_TRABAJABLE)
+    else:
+        probabilidad=1/1226
 
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 #############################################################################################################
 
 #EJECUTABLE
     
     print ("\n".join([" ".join(prelista_final[i:i+15]) for i in range(0,len(prelista_final),15)]))
-   # print(prelista_final)
     
+
+#############################################################################################################
+#############################################################################################################
 
     if len(prelista_final)>=1:    
         bits=-(math.log2(probabilidad)) 
         print("Hay ",len(prelista_final), " palabras posibles, dando una probabilidad de: " ,probabilidad,"para este patron de colores dada la palabra original")
-        print("Ademas nos da",bits, "bits de informacion")
+        #print("Ademas nos da",bits, "bits de informacion") #mejor dejar por afuera cuando se pone a jugar la maquina sola
+        final_list=list(OrderedDict.fromkeys(prelista_final))#eliminar palabras repetidas
+        return final_list
+
     else:
         print("La probabilidad de tu palabra es: 1/", str(len(LiSTA_TRABAJABLE)))
-    #return NUEVAS_PALABRAS
+    #return prelista_final
 
 
-
+    
 
 #############################################################################################################
 #############################################################################################################
 #############################################################################################################
+#############################################################################################################
 
 
 
 
-#poner que sea solo 6 intentos
 
 
 def JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE):
-    i=1
+    i=0
     GANASTE=['v','v','v','v','v']
     TABLERO=[]
-    while TABLERO != GANASTE: #and i<=6:
-        LETRASVERDES,NARANJAS,GRISES,TABLERO=COLOR_SINGULAR(palabra_del_dia)
-        INDICES=_INDICE(TABLERO)    
-        REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE,INDICES,LETRASVERDES,NARANJAS,GRISES)
+    while TABLERO != GANASTE:
+        if  i<6:
+            i+=1
+            print(i)
+            LETRASVERDES,NARANJAS,GRISES,TABLERO=COLOR_SINGULAR(palabra_del_dia)
+            INDICES=_INDICE(TABLERO)    
+            REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE,INDICES,LETRASVERDES,NARANJAS,GRISES)
+            
+        else:
+            print('salimos')
+            break
+    print("Fin del juego")
 
-    print("GANASTEEE")
 
 
-
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 #############################################################################################################
 
 
@@ -355,6 +410,9 @@ def frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
 
 
 
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 #############################################################################################################
 
 def mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
@@ -379,22 +437,19 @@ def mejoresfrecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
 
 
 #############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
-def histograma(mydict,palabra_del_dia):
-    numeros=[]
-    for x in range(len(mydict)):
-        numeros.append(x)
-    fig, ax = plt.subplots()
-    ax.bar(numeros,mydict)
-    plt.title(palabra_del_dia)
 
-    imagenes=str(palabra_del_dia)
-    plt.savefig('imagenes2/'+palabra_del_dia)
 
-#   plt.xlabel('Patron')
-#   plt.ylabel('frecuencias')
- #   plt.show()
 
+
+
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 
 def auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
     NUEVO_COMPENDIO=[]
@@ -409,12 +464,241 @@ def auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE):
     diccionario=dict(sorted(diccionario2.items(), key=lambda item: item[1]))
     
     nueva_lista=[]
+    tableros=[]
     for x in diccionario2.keys():
         nueva_lista.append(diccionario[x]/len(LiSTA_TRABAJABLE))
 
+    for key, value in diccionario2.items():
+        tableros.append(key)
+
+
 
     
-    return nueva_lista,diccionario2
+    return nueva_lista,tableros
+
+
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
+
+
+def entriopia(lista,frecuencias,palabra_del_dia):
+    promedios=[]
+    mayor=0
+    palabrafinal=''
+    index=0
+    diccionario={}
+    
+    if lista is None:
+        lista=[]
+        lista.append(palabra_del_dia)
+    for palabra in lista:
+        #if lista is not True:
+         #   break
+        if len(lista)==1:
+            break
+        promedio=[]
+        COMPENDIO_COLORES=OBTENER_COLORES(palabra,lista)
+        index2=0 
+        probababilidades,tableros=auxiliarentropia(COMPENDIO_COLORES,lista)
+        #if len(lista)>1:
+        #print(COMPENDIO_COLORES)
+        for element in probababilidades:
+            frecuenciapalabra=frecuencias[index]
+            bits=-(math.log2(element))
+            suma=len(probababilidades)/243
+            entriopia=bits*suma
+            promedio.append(entriopia/frecuenciapalabra)
+            #print(palabra + " => ",(entriopia/frecuenciapalabra),frecuenciapalabra,tableros[index2])
+                
+            index2+=1
+        
+        index+=1
+        #varianza=st.variance(promedio)
+        relacion=sum(promedio)/len(promedio)
+        diccionario[palabra]=relacion
+        #palabraentriopia=sum(promedio)/len(lista)
+            
+    diccionario=dict(sorted(diccionario.items(), key=lambda item: item[1]))
+    #print(diccionario)
+    return diccionario
+#        diccionariopromedios={ palabra  : [palabraentriopia] }
+#############################################################################################################
+#############################################################################################################
+
+#MAIN POR DECIRLO ASI
+
+
+#############################################################################################################
+#############################################################################################################
+
+def DATA_FRAME():
+
+    RUTA_ABSOLUTA=os.getcwd()
+    rutaarchivo = os.path.join(RUTA_ABSOLUTA, "2frecuencia.csv")
+    df = pd.read_csv(rutaarchivo,sep=";",on_bad_lines='skip')
+    df.dropna()
+    df['Word'] = df['Word'].astype('str')
+    mask = (df['Word'].str.len() == 5)
+    df = df.loc[mask]
+    
+    palabras=df['Word'].tolist()
+    
+    frecuencias=df['Freq'].tolist()
+    
+    for palabra in palabras:
+        palabra=str(palabra)
+        if len(palabra) != 5:
+            indexpalabra=palabras.index(palabra)
+            del palabras[indexpalabra]
+    
+    return palabras,frecuencias
+
+
+def MAQUINA_COLOR_SINGULAR(palabra,palabra_del_dia):
+
+    COLORES=[]
+    LETRASVERDES=[]
+    NARANJAS=[]
+    GRISES=[]
+
+    for letter in range(len(str(palabra))):
+        if(palabra[letter]==palabra_del_dia[letter]):
+            COLORES.append("v")
+            LETRASVERDES.append(palabra[letter])
+
+        elif (palabra[letter] in palabra_del_dia):
+            COLORES.append("n")
+            NARANJAS.append(palabra[letter])
+                
+        else:
+            COLORES.append("g")
+            GRISES.append(palabra[letter])
+            
+    
+    print(COLORES)
+    return LETRASVERDES,NARANJAS,GRISES,COLORES
+
+def ordenar_lista(palabra,palabra_del_dia):
+    LETRASVERDES,NARANJAS,GRISES,TABLERO=MAQUINA_COLOR_SINGULAR(palabra,palabra_del_dia)
+    INDICES=_INDICE(TABLERO)
+
+    lista =REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE,INDICES,LETRASVERDES,NARANJAS,GRISES)
+    for word in lista:
+        pass
+
+
+
+def MEJOR_PALABRA(diccionario,palabra_del_dia):
+    if len(list(diccionario.keys()))>=1:
+
+        first_value = list(diccionario.keys())[-1]
+        palabra=str(first_value)
+        print(palabra)
+        return palabra
+    else:
+        return palabra_del_dia
+    #quiero hacer un metodo que me coja una lista que contenga las palabras ordenadas 
+    #por mayor probabilidad y que escoja la primera
+
+
+def MAQUINA_JUGAR_WORDLE(LiSTA_TRABAJABLE,frecuencias):
+    palabra_del_dia=random.choice(LiSTA_TRABAJABLE)
+    i=0
+    GANASTE=['v','v','v','v','v']
+    TABLERO=[]
+    palabra='above' #esta palabra puede ser la que queramos
+    count=0
+    medidor=0
+    while TABLERO != GANASTE:
+        if  i<6:
+            count+=1
+            i+=1
+                     
+            LETRASVERDES,NARANJAS,GRISES,TABLERO=MAQUINA_COLOR_SINGULAR(palabra,palabra_del_dia)
+            if TABLERO==GANASTE:
+                break
+
+            INDICES=_INDICE(TABLERO)    
+            if medidor==0: 
+                lista = REDUCIR_PROBABILIDADES(LiSTA_TRABAJABLE,INDICES,LETRASVERDES,NARANJAS,GRISES)
+
+            else:
+                
+                lista = REDUCIR_PROBABILIDADES(lista,INDICES,LETRASVERDES,NARANJAS,GRISES)
+
+            medidor+=1
+            if lista==True: 
+                if len(lista)==1:
+                    break
+            diccionario=entriopia(lista,listafrecuencias,palabra_del_dia)
+            
+            if palabra_del_dia==palabra:
+                break
+            
+            palabra = MEJOR_PALABRA(diccionario,palabra_del_dia)
+            
+        else:
+            print('No vale')
+            break
+    print("Fin del juego",'Con '+str(count)+" intentos")
+    return count
+
+
+
+
+
+listapalabras,listafrecuencias=DATA_FRAME()
+
+
+
+
+#JUGAR NOSOTROS
+
+
+#MAQUINA_JUGAR_WORDLE(listapalabras,listafrecuencias)
+
+
+
+
+#MAQUINA JUEGA SOLAR
+
+contadorpromedios=[]
+for i in range(500):
+    contador= MAQUINA_JUGAR_WORDLE(listapalabras,listafrecuencias)
+    contadorpromedios.append(contador)
+
+print(sum(contadorpromedios)/len(contadorpromedios))
+
+
+#entriopia(lista)
+
+
+#METODO DE UN SOLO USO
+
+def histograma(mydict,palabra_del_dia):
+    numeros=[]
+    
+    for x in range(len(mydict)):
+        numeros.append(x)
+    fig, ax = plt.subplots()
+    ax.bar(numeros,mydict)
+    plt.title(palabra_del_dia)
+
+    imagenes=str(palabra_del_dia)
+    plt.savefig('imagenes2/'+palabra_del_dia)
+
+    plt.xlabel('Patron')
+    plt.ylabel('frecuencias')
+
+    plt.show()
+
 
 def guardarimagenes(LiSTA_TRABAJABLE):
     for palabra in LiSTA_TRABAJABLE:
@@ -424,76 +708,15 @@ def guardarimagenes(LiSTA_TRABAJABLE):
             #print(lista)
             histograma(lista,palabra)
 
-#dado una palabra, que recopile la probababilidad de los colores, y sume las probababilidades:
-#mas plano mas entriopia
-
-def entriopia(LiSTA_TRABAJABLE):
-    promedios=[]
-    mayor=0
-    palabrafinal=''
-    for palabra in LiSTA_TRABAJABLE:
-        promedio=[]
-        diccionariopromedios=dict()
-        COMPENDIO_COLORES=OBTENER_COLORES(palabra,LiSTA_TRABAJABLE)
-        lista,dicti=auxiliarentropia(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
-        if len(lista)>1:
-            for element in lista:
-
-                bits=-(math.log2(element))
-                suma=len(lista)/243
-                entriopia=bits*suma
-                promedio.append(entriopia)
-                
-
-        else:
-            print("Existo :)")
-        
-        palabraentriopia=sum(promedio)/len(lista)
-
-        
-        diccionariopromedios={ palabra  : [palabraentriopia] }
-#############################################################################################################
-#############################################################################################################
-
-#MAIN POR DECIRLO ASI
 
 
-#############################################################################################################
-#############################################################################################################
-#guardarimagenes(LiSTA_TRABAJABLE)
-#entriopia(LiSTA_TRABAJABLE)
-#print(palabra_del_dia)
 
 
-JUGAR_WORDLE(palabra_del_dia,LiSTA_TRABAJABLE)
 
-#COMPENDIO_COLORES=OBTENER_COLORES(palabra_del_dia,LiSTA_TRABAJABLE)
 
-#frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
 
-#lista=frecuencias(COMPENDIO_COLORES,LiSTA_TRABAJABLE)
-#diccionario = {1: 27, 34: 1, 3: 72, 4: 62, 5: 33, 6: 36, 7: 20, 8: 12, 9: 9, 10: 6, 11: 5, 
-    #          12: 8, 2: 74, 14: 4, 15: 3, 16: 1, 17: 1, 18: 1, 19: 1, 21: 1, 27: 2}
 
 #histograma(lista,palabra_del_dia)
-
-
-
-
-#VER_COMPENDIO(COMPENDIO_COLORES)
-#VER_PALABRAS(LiSTA_TRABAJABLE)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #METODOS INUTILES
